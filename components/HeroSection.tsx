@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Channel } from '@/types/channel';
@@ -9,6 +10,8 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ channels }: HeroSectionProps) {
+  const [showInfo, setShowInfo] = useState(false);
+
   if (channels.length === 0) return null;
 
   // Rotate featured channels
@@ -64,7 +67,10 @@ export default function HeroSection({ channels }: HeroSectionProps) {
                 </svg>
                 Watch Now
               </Link>
-              <button className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white font-semibold rounded-lg hover:bg-white/30 transition-colors backdrop-blur-sm">
+              <button
+                onClick={() => setShowInfo(true)}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white font-semibold rounded-lg hover:bg-white/30 transition-colors backdrop-blur-sm"
+              >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -108,6 +114,57 @@ export default function HeroSection({ channels }: HeroSectionProps) {
                 </div>
               </Link>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* More Info Modal */}
+      {showInfo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-neutral-900 rounded-lg max-w-2xl w-full max-h-96 overflow-y-auto">
+            <div className="p-6 space-y-4">
+              <div className="flex items-start justify-between">
+                <div>
+                  <h2 className="text-3xl font-bold text-white">{featured.name}</h2>
+                  <p className="text-neutral-400 mt-1">{featured.category}</p>
+                </div>
+                <button
+                  onClick={() => setShowInfo(false)}
+                  className="text-neutral-400 hover:text-white transition-colors p-2 -m-2"
+                  aria-label="Close"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                <div>
+                  <h3 className="text-sm font-semibold text-neutral-300 mb-1">Country</h3>
+                  <p className="text-white">{featured.country}</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-neutral-300 mb-1">Language</h3>
+                  <p className="text-white uppercase">{featured.language}</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-neutral-300 mb-1">Status</h3>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-green-500 rounded-full" />
+                    <span className="text-white">Live</span>
+                  </div>
+                </div>
+              </div>
+
+              <Link
+                href={`/watch/${featured.slug}`}
+                onClick={() => setShowInfo(false)}
+                className="block w-full px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors text-center mt-6"
+              >
+                Watch Now
+              </Link>
+            </div>
           </div>
         </div>
       )}

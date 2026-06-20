@@ -29,8 +29,22 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html.dark {
+  color-scheme: dark;
+  --background: #0a0a0a;
+  --foreground: #f9fafb;
+  --neutral-50: #f9fafb;
+  --neutral-100: #f3f4f6;
+}
+
+html.light {
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  html:not(.light) {
     --background: #0a0a0a;
     --foreground: #f9fafb;
     --neutral-50: #f9fafb;

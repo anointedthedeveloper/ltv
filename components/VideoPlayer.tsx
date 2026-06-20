@@ -24,6 +24,8 @@ export default function VideoPlayer({
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(autoplay);
+  const retryCountRef = useRef(0);
+  const maxRetriesRef = useRef(3);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -49,9 +51,13 @@ export default function VideoPlayer({
             const hls = new HLS({
               debug: false,
               enableWorker: true,
+              // Use proxy for CORS issues
+              loader: undefined,
             });
 
-            hls.loadSource(streamUrl);
+            // Proxy the stream URL to bypass CORS
+            const proxyUrl = `/api/stream?url=${encodeURIComponent(streamUrl)}`;
+            hls.loadSource(proxyUrl);
             hls.attachMedia(video);
 
             // Handle HLS events
@@ -67,28 +73,40 @@ export default function VideoPlayer({
 
             hls.on(HLS.Events.ERROR, (event, data) => {
               if (data.fatal) {
-                switch (data.type) {
-                  case HLS.ErrorTypes.NETWORK_ERROR:
-                    setErrorMessage('Network error. Please check your connection.');
-                    break;
-                  case HLS.ErrorTypes.MEDIA_ERROR:
-                    setErrorMessage('Stream playback error. Retrying...');
-                    hls.recoverMediaError();
-                    break;
-                  default:
-                    setErrorMessage('Unable to load stream');
-                    break;
+                if (retryCountRef.current < maxRetriesRef.current) {
+                  retryCountRef.current++;
+                  console.log(`[v0] HLS Error, retrying (${retryCountRef.current}/${maxRetriesRef.current})...`);
+                  setTimeout(() => {
+                    try {
+                      hls.startLoad();
+                    } catch (e) {
+                      console.log('[v0] Retry failed:', e);
+                    }
+                  }, 2000 * retryCountRef.current);
+                } else {
+                  switch (data.type) {
+                    case HLS.ErrorTypes.NETWORK_ERROR:
+                      setErrorMessage('Stream unavailable. This stream source may be offline or the server is not responding.');
+                      break;
+                    case HLS.ErrorTypes.MEDIA_ERROR:
+                      setErrorMessage('This stream format is not supported in your browser.');
+                      break;
+                    default:
+                      setErrorMessage('Unable to load stream. The channel may be offline or the stream is temporarily unavailable.');
+                      break;
+                  }
+                  setHasError(true);
+                  setIsLoading(false);
+                  onError?.(new Error(`HLS Error: ${data.type}`));
                 }
-                setHasError(true);
-                setIsLoading(false);
-                onError?.(new Error(`HLS Error: ${data.type}`));
               }
             });
 
             hlsRef.current = hls;
           } else {
             // Fallback for native HLS support (Safari)
-            video.src = streamUrl;
+            const proxyUrl = `/api/stream?url=${encodeURIComponent(streamUrl)}`;
+            video.src = proxyUrl;
             setIsLoading(false);
             if (autoplay) {
               video.play().catch(() => {
@@ -97,8 +115,9 @@ export default function VideoPlayer({
             }
           }
         } else {
-          // Direct stream URL (MPEG-TS, etc.)
-          video.src = streamUrl;
+          // Direct stream URL (MPEG-TS, etc.) - proxy through API
+          const proxyUrl = `/api/stream?url=${encodeURIComponent(streamUrl)}`;
+          video.src = proxyUrl;
           setIsLoading(false);
           if (autoplay) {
             video.play().catch(() => {
@@ -216,20 +235,34 @@ export default function VideoPlayer({
         {/* Error State */}
         {hasError && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/80">
-            <div className="flex flex-col items-center gap-4 px-6 text-center">
+            <div className="flex flex-col items-center gap-4 px-6 text-center max-w-md">
               <svg className="w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div>
                 <p className="text-white font-semibold">Stream Unavailable</p>
-                <p className="text-neutral-400 text-sm mt-1">{errorMessage}</p>
+                <p className="text-neutral-400 text-sm mt-2 leading-relaxed">{errorMessage}</p>
+                <p className="text-neutral-500 text-xs mt-3 italic">
+                  Note: IPTV streams depend on external servers. Some channels may be offline or geo-restricted.
+                </p>
               </div>
-              <button
-                onClick={() => window.location.reload()}
-                className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
-              >
-                Try Again
-              </button>
+              <div className="flex gap-3 mt-4">
+                <button
+                  onClick={() => {
+                    retryCountRef.current = 0;
+                    window.location.reload();
+                  }}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
+                >
+                  Retry
+                </button>
+                <button
+                  onClick={() => window.history.back()}
+                  className="px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600 transition-colors text-sm font-medium"
+                >
+                  Go Back
+                </button>
+              </div>
             </div>
           </div>
         )}
