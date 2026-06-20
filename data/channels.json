@@ -1,0 +1,164 @@
+[
+  {
+    "id": "cartoon-network",
+    "name": "Cartoon Network",
+    "category": "Kids",
+    "country": "US",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/8/80/Cartoon_Network_2010_logo.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "nickelodeon",
+    "name": "Nickelodeon",
+    "category": "Kids",
+    "country": "US",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/6/66/Nickelodeon_2009_logo.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "nicktoons",
+    "name": "NickToons",
+    "category": "Kids",
+    "country": "US",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Nicktoons_Network_logo.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "disney-junior",
+    "name": "Disney Junior",
+    "category": "Kids",
+    "country": "US",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Disney_Junior_logo.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "disney-channel",
+    "name": "Disney Channel",
+    "category": "Kids",
+    "country": "US",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Disney_Channel_logo_%282019%29.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "national-geographic",
+    "name": "National Geographic",
+    "category": "Education",
+    "country": "US",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Natgeo_logo.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "discovery",
+    "name": "Discovery",
+    "category": "Education",
+    "country": "US",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a8/Discovery_Channel_logo.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "animal-planet",
+    "name": "Animal Planet",
+    "category": "Education",
+    "country": "US",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Animal_Planet_2018_logo.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "cnn",
+    "name": "CNN",
+    "category": "News",
+    "country": "US",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/b/b1/CNN.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "bbc-news",
+    "name": "BBC News",
+    "category": "News",
+    "country": "UK",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/6/62/BBC_News_2019.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "al-jazeera",
+    "name": "Al Jazeera",
+    "category": "News",
+    "country": "QA",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Aljazeera.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "channels-tv",
+    "name": "Channels TV",
+    "category": "News",
+    "country": "Nigeria",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Channels_TV_logo.png",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "nta",
+    "name": "NTA",
+    "category": "News",
+    "country": "Nigeria",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/2/2e/NTA_Nigeria_logo.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "dove-tv",
+    "name": "Dove TV",
+    "category": "Religious",
+    "country": "Nigeria",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Dove_TV_logo.png/240px-Dove_TV_logo.png",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "emmanuel-tv",
+    "name": "Emmanuel TV",
+    "category": "Religious",
+    "country": "Nigeria",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Emmanuel_TV_logo.png/200px-Emmanuel_TV_logo.png",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "mtv",
+    "name": "MTV",
+    "category": "Entertainment",
+    "country": "US",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/6/63/MTV_2021_%28brand_version%29.svg",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "trace",
+    "name": "Trace",
+    "category": "Entertainment",
+    "country": "FR",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Trace_logo.svg/200px-Trace_logo.svg.png",
+    "stream": "",
+    "featured": true
+  },
+  {
+    "id": "tvc",
+    "name": "TVC",
+    "category": "Entertainment",
+    "country": "Nigeria",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/TVC_Nigeria_logo.png/200px-TVC_Nigeria_logo.png",
+    "stream": "",
+    "featured": true
+  }
+]
