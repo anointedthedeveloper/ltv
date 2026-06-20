@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import Hls from 'hls.js';
 import channels from '@/data/channels.json';
 import ThemeToggle from '@/components/ThemeToggle';
@@ -56,7 +57,7 @@ export default function WatchPage() {
 
   if (!channel) {
     return (
-      <div className="min-h-screen bg-zinc-950 dark:bg-zinc-950 bg-zinc-50 text-white dark:text-white text-zinc-900 flex items-center justify-center">
+      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white flex items-center justify-center">
         <p>Channel not found</p>
       </div>
     );
@@ -68,21 +69,21 @@ export default function WatchPage() {
     .slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-zinc-950 dark:bg-zinc-950 bg-zinc-50 text-white dark:text-white text-zinc-900">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-zinc-950/95 dark:bg-zinc-950/95 bg-white/95 backdrop-blur-sm border-b border-zinc-800 dark:border-zinc-800 border-zinc-200">
+      <header className="sticky top-0 z-50 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-sm border-b border-zinc-200 dark:border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
             Live TV
           </Link>
           <nav className="flex gap-6 items-center">
-            <Link href="/" className="text-zinc-400 dark:text-zinc-400 text-zinc-600 hover:text-white dark:hover:text-white hover:text-zinc-900 transition-colors">
+            <Link href="/" className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
               Home
             </Link>
-            <Link href="/live" className="text-zinc-400 dark:text-zinc-400 text-zinc-600 hover:text-white dark:hover:text-white hover:text-zinc-900 transition-colors">
+            <Link href="/live" className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
               All Channels
             </Link>
-            <Link href="/favorites" className="text-zinc-400 dark:text-zinc-400 text-zinc-600 hover:text-white dark:hover:text-white hover:text-zinc-900 transition-colors">
+            <Link href="/favorites" className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
               Favorites
             </Link>
             <ThemeToggle />
@@ -105,11 +106,15 @@ export default function WatchPage() {
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <div className="text-center">
-                  <img
-                    src={channel.logo}
-                    alt={channel.name}
-                    className="mx-auto mb-4 w-48 h-48 object-contain"
-                  />
+                  <div className="relative mx-auto mb-4 w-48 h-48">
+                    <Image
+                      src={channel.logo}
+                      alt={channel.name}
+                      fill
+                      unoptimized
+                      className="object-contain"
+                    />
+                  </div>
                   <p className="text-zinc-400">Stream URL not configured</p>
                 </div>
               </div>
@@ -120,21 +125,25 @@ export default function WatchPage() {
         {/* Channel Info */}
         <div className="mb-8">
           <div className="flex items-start gap-4">
-            <img
-              src={channel.logo}
-              alt={channel.name}
-              className="w-20 h-20 rounded-lg bg-zinc-900 dark:bg-zinc-900 bg-zinc-200 p-2 object-contain"
-            />
+            <div className="relative w-20 h-20 rounded-lg bg-zinc-200 dark:bg-zinc-900 p-2">
+              <Image
+                src={channel.logo}
+                alt={channel.name}
+                fill
+                unoptimized
+                className="object-contain"
+              />
+            </div>
             <div className="flex-1">
               <div className="flex items-center gap-4 mb-2">
                 <h1 className="text-3xl font-bold">{channel.name}</h1>
                 <button
                   onClick={() => toggleFavorite(channel.id)}
-                  className="p-2 rounded-full bg-zinc-900 dark:bg-zinc-900 bg-zinc-200 hover:bg-zinc-800 dark:hover:bg-zinc-800 hover:bg-zinc-300 transition-colors"
+                  className="p-2 rounded-full bg-zinc-200 dark:bg-zinc-900 hover:bg-zinc-300 dark:hover:bg-zinc-800 transition-colors"
                   aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
                 >
                   <svg
-                    className={`w-6 h-6 ${favorite ? 'text-red-500 fill-current' : 'text-zinc-400 dark:text-zinc-400 text-zinc-600'}`}
+                    className={`w-6 h-6 ${favorite ? 'text-red-500 fill-current' : 'text-zinc-600 dark:text-zinc-400'}`}
                     fill={favorite ? 'currentColor' : 'none'}
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -148,9 +157,9 @@ export default function WatchPage() {
                   </svg>
                 </button>
               </div>
-              <div className="flex gap-2 text-sm text-zinc-400 dark:text-zinc-400 text-zinc-600">
-                <span className="px-2 py-1 bg-zinc-900 dark:bg-zinc-900 bg-zinc-200 rounded">{channel.category}</span>
-                <span className="px-2 py-1 bg-zinc-900 dark:bg-zinc-900 bg-zinc-200 rounded">{channel.country}</span>
+              <div className="flex gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+                <span className="px-2 py-1 bg-zinc-200 dark:bg-zinc-900 rounded">{channel.category}</span>
+                <span className="px-2 py-1 bg-zinc-200 dark:bg-zinc-900 rounded">{channel.country}</span>
               </div>
             </div>
           </div>
@@ -168,10 +177,12 @@ export default function WatchPage() {
                   className="group relative flex-shrink-0 cursor-pointer transition-transform hover:scale-105"
                 >
                   <div className="relative aspect-video bg-zinc-900 rounded-lg overflow-hidden">
-                    <img
+                    <Image
                       src={relatedChannel.logo}
                       alt={relatedChannel.name}
-                      className="w-full h-full object-contain p-4"
+                      fill
+                      unoptimized
+                      className="object-contain p-4"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
                       <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -179,7 +190,7 @@ export default function WatchPage() {
                       </div>
                     </div>
                   </div>
-                  <p className="mt-2 text-sm font-medium text-zinc-300 dark:text-zinc-300 text-zinc-700 truncate">
+                  <p className="mt-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 truncate">
                     {relatedChannel.name}
                   </p>
                 </Link>

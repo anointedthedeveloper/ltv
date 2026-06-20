@@ -12,21 +12,21 @@ export default function FavoritesPage() {
   const favoriteChannels = channels.filter(channel => favorites.includes(channel.id));
 
   return (
-    <div className="min-h-screen bg-zinc-950 dark:bg-zinc-950 bg-zinc-50 text-white dark:text-white text-zinc-900">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-zinc-950/95 dark:bg-zinc-950/95 bg-white/95 backdrop-blur-sm border-b border-zinc-800 dark:border-zinc-800 border-zinc-200">
+      <header className="sticky top-0 z-50 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-sm border-b border-zinc-200 dark:border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
             Live TV
           </Link>
           <nav className="flex gap-6 items-center">
-            <Link href="/" className="text-zinc-400 dark:text-zinc-400 text-zinc-600 hover:text-white dark:hover:text-white hover:text-zinc-900 transition-colors">
+            <Link href="/" className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
               Home
             </Link>
-            <Link href="/live" className="text-zinc-400 dark:text-zinc-400 text-zinc-600 hover:text-white dark:hover:text-white hover:text-zinc-900 transition-colors">
+            <Link href="/live" className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
               All Channels
             </Link>
-            <Link href="/favorites" className="text-white dark:text-white text-zinc-900 font-medium hover:text-red-500 transition-colors">
+            <Link href="/favorites" className="text-zinc-900 dark:text-white font-medium hover:text-red-500 transition-colors">
               Favorites
             </Link>
             <ThemeToggle />
@@ -45,7 +45,7 @@ export default function FavoritesPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-zinc-400 dark:text-zinc-400 text-zinc-600 text-lg mb-4">
+            <p className="text-zinc-600 dark:text-zinc-400 text-lg mb-4">
               No favorites yet
             </p>
             <Link

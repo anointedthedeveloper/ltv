@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Channel } from '@/types/channel';
 import { useFavorites } from '@/hooks/useFavorites';
 
@@ -19,11 +20,13 @@ export default function ChannelCard({ channel }: ChannelCardProps) {
   return (
     <Link href={`/watch/${channel.id}`}>
       <div className="group relative flex-shrink-0 w-48 cursor-pointer transition-transform hover:scale-105">
-        <div className="relative aspect-video bg-zinc-900 dark:bg-zinc-900 bg-zinc-200 rounded-lg overflow-hidden">
-          <img
+        <div className="relative aspect-video bg-zinc-200 dark:bg-zinc-900 rounded-lg overflow-hidden">
+          <Image
             src={channel.logo}
             alt={channel.name}
-            className="w-full h-full object-contain p-4"
+            fill
+            unoptimized
+            className="object-contain p-4"
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
             <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-red-600 text-white px-4 py-2 rounded-full font-semibold">
@@ -50,7 +53,7 @@ export default function ChannelCard({ channel }: ChannelCardProps) {
             </svg>
           </button>
         </div>
-        <p className="mt-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 text-zinc-900 truncate">
+        <p className="mt-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
           {channel.name}
         </p>
       </div>
