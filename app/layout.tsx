@@ -14,8 +14,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Live TV - Curated IPTV",
-  description: "Watch your favorite live TV channels",
+  title: "Live TV - Stream African & Global Channels",
+  description: "Watch live TV channels from around the world including African Magic, DStv, and international broadcasts. Stream news, sports, entertainment, and educational content.",
+  keywords: ["live TV", "streaming", "African Magic", "DStv", "channels", "broadcast"],
+  openGraph: {
+    title: "Live TV - Stream African & Global Channels",
+    description: "Your ultimate destination for live TV streaming",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -26,9 +32,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-white dark:bg-neutral-950`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-white dark:bg-neutral-950">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

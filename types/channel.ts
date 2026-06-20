@@ -6,4 +6,5 @@ export interface Channel {
   logo: string;
   stream: string;
   featured: boolean;
+  icon?: string;
 }
