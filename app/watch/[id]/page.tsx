@@ -7,6 +7,7 @@ import curatedChannels from '@/data/curated-channels.json';
 import VideoPlayer from '@/components/VideoPlayer';
 import ChannelCard from '@/components/ChannelCard';
 import ThemeToggle from '@/components/ThemeToggle';
+import { IconTV } from '@/components/Icons';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useRecentlyWatched } from '@/hooks/useRecentlyWatched';
 import type { Channel } from '@/types/channel';
@@ -42,7 +43,10 @@ export default function WatchPage() {
       <div className="min-h-screen bg-black">
         <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-neutral-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-            <Link href="/" className="text-xl font-bold text-white">Live TV</Link>
+            <Link href="/" className="flex items-center gap-2">
+              <IconTV className="w-6 h-6 text-red-500" />
+              <span className="text-xl font-bold text-white">Live TV</span>
+            </Link>
             <ThemeToggle />
           </div>
         </header>
@@ -69,7 +73,7 @@ export default function WatchPage() {
       <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-neutral-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <div className="text-2xl">📺</div>
+            <IconTV className="w-8 h-8 text-red-500" />
             <h1 className="text-xl font-bold bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
               Live TV
             </h1>
