@@ -1,37 +1,87 @@
 'use client';
 
 import Link from 'next/link';
-import channels from '@/data/channels.json';
+import { Suspense } from 'react';
+import curatedChannels from '@/data/curated-channels.json';
 import ChannelCard from '@/components/ChannelCard';
+import HeroSection from '@/components/HeroSection';
 import ThemeToggle from '@/components/ThemeToggle';
+import { CategoryRowSkeleton, HeroSectionSkeleton } from '@/components/SkeletonLoader';
 import { useRecentlyWatched } from '@/hooks/useRecentlyWatched';
+import type { Channel, ChannelCategory } from '@/types/channel';
 
-export default function Home() {
-  const categories = ['Kids', 'Sports', 'News', 'Education', 'Religious', 'Entertainment'] as const;
-  const { getRecentlyWatchedIds } = useRecentlyWatched();
-  const featuredChannels = channels.filter(c => c.featured);
-  const recentlyWatchedIds = getRecentlyWatchedIds();
-  const recentlyWatchedChannels = recentlyWatchedIds
-    .map(id => channels.find(c => c.id === id))
-    .filter((c): c is typeof channels[0] => c !== undefined);
+const CATEGORIES: ChannelCategory[] = ['Kids', 'News', 'Music', 'Religious', 'Sports', 'Entertainment', 'Movies', 'Nigerian'];
 
-  const getCategoryIcon = (category: string) => {
-    const icons: Record<string, string> = {
-      'Kids': '👶',
-      'Sports': '⚽',
-      'News': '📰',
-      'Education': '🎓',
-      'Religious': '⛪',
-      'Entertainment': '🎬',
-      'African': '🌍',
-    };
-    return icons[category] || '📺';
-  };
+const CATEGORY_ICONS: Record<ChannelCategory, string> = {
+  'Kids': '👶',
+  'News': '📰',
+  'Music': '🎵',
+  'Religious': '⛪',
+  'Sports': '⚽',
+  'Entertainment': '🎬',
+  'Movies': '🎭',
+  'Nigerian': '🇳🇬',
+};
+
+function CategoryRow({ category, channels }: { category: ChannelCategory; channels: Channel[] }) {
+  if (channels.length === 0) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-neutral-50 dark:from-neutral-950 dark:to-neutral-900 text-neutral-900 dark:text-white">
+    <section>
+      <div className="flex items-center gap-3 mb-6">
+        <span className="text-3xl">{CATEGORY_ICONS[category]}</span>
+        <h2 className="text-3xl font-bold text-balance">{category}</h2>
+        <span className="ml-auto text-sm text-neutral-500">
+          {channels.length} channels
+        </span>
+      </div>
+      <div className="flex gap-6 overflow-x-auto pb-4 scroll-smooth">
+        {channels.map((channel) => (
+          <div key={channel.id} className="flex-shrink-0">
+            <ChannelCard channel={channel} />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ContinueWatching({ channels }: { channels: Channel[] }) {
+  if (channels.length === 0) return null;
+
+  return (
+    <section>
+      <div className="flex items-center gap-3 mb-6">
+        <span className="text-3xl">⏱️</span>
+        <h2 className="text-3xl font-bold">Continue Watching</h2>
+      </div>
+      <div className="flex gap-6 overflow-x-auto pb-4 scroll-smooth">
+        {channels.map((channel) => (
+          <div key={channel.id} className="flex-shrink-0">
+            <ChannelCard channel={channel} />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export default function Home() {
+  const { getRecentlyWatchedIds } = useRecentlyWatched();
+  
+  const channels = curatedChannels as Channel[];
+  const recentlyWatchedIds = getRecentlyWatchedIds();
+  const recentlyWatchedChannels = recentlyWatchedIds
+    .map((id) => channels.find((c) => c.id === id))
+    .filter((c): c is Channel => c !== undefined)
+    .slice(0, 10);
+
+  const featuredChannels = channels.filter((c) => c.featured).slice(0, 4);
+
+  return (
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-200 dark:border-neutral-800">
+      <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-neutral-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
             <div className="text-3xl">📺</div>
@@ -39,75 +89,65 @@ export default function Home() {
               Live TV
             </h1>
           </Link>
-          <nav className="flex gap-8 items-center">
-            <Link href="/" className="text-neutral-900 dark:text-white font-semibold hover:text-red-600 dark:hover:text-red-500 transition-colors">
+          <nav className="hidden md:flex gap-8 items-center">
+            <Link href="/" className="text-white font-semibold hover:text-red-500 transition-colors">
               Home
             </Link>
-            <Link href="/live" className="text-neutral-600 dark:text-neutral-400 font-medium hover:text-neutral-900 dark:hover:text-white transition-colors">
+            <Link href="/live" className="text-neutral-400 hover:text-white transition-colors">
               All Channels
             </Link>
-            <Link href="/favorites" className="text-neutral-600 dark:text-neutral-400 font-medium hover:text-neutral-900 dark:hover:text-white transition-colors">
+            <Link href="/channels" className="text-neutral-400 hover:text-white transition-colors">
+              Directory
+            </Link>
+            <Link href="/favorites" className="text-neutral-400 hover:text-white transition-colors">
               Favorites
             </Link>
             <ThemeToggle />
           </nav>
+          <div className="md:hidden">
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-        {/* Recently Watched */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+        {/* Hero Section */}
+        <Suspense fallback={<HeroSectionSkeleton />}>
+          <HeroSection channels={featuredChannels} />
+        </Suspense>
+
+        {/* Continue Watching */}
         {recentlyWatchedChannels.length > 0 && (
-          <section>
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl">⏱️</span>
-              <h2 className="text-3xl font-bold">Continue Watching</h2>
-            </div>
-            <div className="flex gap-6 overflow-x-auto pb-4 scroll-smooth">
-              {recentlyWatchedChannels.map(channel => (
-                <div key={channel.id} className="flex-shrink-0">
-                  <ChannelCard channel={channel} />
-                </div>
-              ))}
-            </div>
-          </section>
+          <ContinueWatching channels={recentlyWatchedChannels} />
         )}
 
-        {/* Trending Channels */}
-        <section>
-          <div className="flex items-center gap-3 mb-6">
-            <span className="text-3xl">🔥</span>
-            <h2 className="text-3xl font-bold">Trending Now</h2>
-          </div>
-          <div className="flex gap-6 overflow-x-auto pb-4 scroll-smooth">
-            {featuredChannels.slice(0, 8).map(channel => (
-              <div key={channel.id} className="flex-shrink-0">
-                <ChannelCard channel={channel} />
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Categories */}
-        {categories.map(category => {
-          const categoryChannels = featuredChannels.filter(c => c.category === category);
-          if (categoryChannels.length === 0) return null;
-
+        {/* Category Sections */}
+        {CATEGORIES.map((category) => {
+          const categoryChannels = channels.filter((c) => c.category === category);
+          
           return (
-            <section key={category}>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-3xl">{getCategoryIcon(category)}</span>
-                <h2 className="text-3xl font-bold">{category}</h2>
-              </div>
-              <div className="flex gap-6 overflow-x-auto pb-4 scroll-smooth">
-                {categoryChannels.map(channel => (
-                  <div key={channel.id} className="flex-shrink-0">
-                    <ChannelCard channel={channel} />
-                  </div>
-                ))}
-              </div>
-            </section>
+            <Suspense key={category} fallback={<CategoryRowSkeleton />}>
+              <CategoryRow category={category} channels={categoryChannels} />
+            </Suspense>
           );
         })}
+
+        {/* Call to Action */}
+        <section className="mt-16 mb-8">
+          <div className="bg-gradient-to-r from-red-600 to-red-500 rounded-xl p-8 text-center">
+            <h2 className="text-3xl font-bold mb-3">Discover More Channels</h2>
+            <p className="text-neutral-100 mb-6">Browse our complete channel directory with advanced filters</p>
+            <Link
+              href="/live"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-red-600 font-semibold rounded-lg hover:bg-neutral-100 transition-colors"
+            >
+              Browse All Channels
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+        </section>
       </main>
     </div>
   );

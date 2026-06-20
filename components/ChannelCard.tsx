@@ -20,7 +20,7 @@ export default function ChannelCard({ channel }: ChannelCardProps) {
   };
 
   return (
-    <Link href={`/watch/${channel.id}`}>
+    <Link href={`/watch/${channel.slug}`}>
       <div className="group relative flex-shrink-0 w-48 cursor-pointer">
         <div className="relative aspect-video bg-gradient-to-br from-neutral-200 to-neutral-300 dark:from-neutral-800 dark:to-neutral-900 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-lg transition-all duration-300">
           <div className="absolute inset-0">

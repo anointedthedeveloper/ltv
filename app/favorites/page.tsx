@@ -1,20 +1,22 @@
 'use client';
 
 import Link from 'next/link';
-import channels from '@/data/channels.json';
+import curatedChannels from '@/data/curated-channels.json';
 import ChannelCard from '@/components/ChannelCard';
 import ThemeToggle from '@/components/ThemeToggle';
 import { useFavorites } from '@/hooks/useFavorites';
+import type { Channel } from '@/types/channel';
 
 export default function FavoritesPage() {
   const { favorites } = useFavorites();
+  const channels = curatedChannels as Channel[];
   
   const favoriteChannels = channels.filter(channel => favorites.includes(channel.id));
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-neutral-50 dark:from-neutral-950 dark:to-neutral-900 text-neutral-900 dark:text-white">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-200 dark:border-neutral-800">
+      <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-neutral-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <div className="text-3xl">📺</div>
@@ -22,18 +24,24 @@ export default function FavoritesPage() {
               Live TV
             </h1>
           </Link>
-          <nav className="flex gap-8 items-center">
-            <Link href="/" className="text-neutral-600 dark:text-neutral-400 font-medium hover:text-neutral-900 dark:hover:text-white transition-colors">
+          <nav className="hidden md:flex gap-8 items-center">
+            <Link href="/" className="text-neutral-400 hover:text-white transition-colors">
               Home
             </Link>
-            <Link href="/live" className="text-neutral-600 dark:text-neutral-400 font-medium hover:text-neutral-900 dark:hover:text-white transition-colors">
+            <Link href="/live" className="text-neutral-400 hover:text-white transition-colors">
               All Channels
             </Link>
-            <Link href="/favorites" className="text-neutral-900 dark:text-white font-semibold hover:text-red-600 dark:hover:text-red-500 transition-colors">
+            <Link href="/channels" className="text-neutral-400 hover:text-white transition-colors">
+              Directory
+            </Link>
+            <Link href="/favorites" className="text-white font-semibold hover:text-red-500 transition-colors">
               Favorites
             </Link>
             <ThemeToggle />
           </nav>
+          <div className="md:hidden">
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
