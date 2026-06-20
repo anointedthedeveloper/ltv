@@ -370,5 +370,17 @@
     "streamUrl": "https://tvce.gridpapaservers.com/TVCSEPT/ngrp:myStream_all/playlist.m3u8",
     "featured": false,
     "active": true
+  },
+  {
+    "id": "032",
+    "name": "Dove TV",
+    "slug": "dove-tv",
+    "category": "Religious",
+    "country": "NG",
+    "language": "en",
+    "logo": "https://i.imgur.com/yN4Q5vB.png",
+    "streamUrl": "https://dove.impulestream.net/dove/ngrp:Dove_all/playlist.m3u8",
+    "featured": true,
+    "active": true
   }
 ]

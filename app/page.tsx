@@ -6,30 +6,47 @@ import curatedChannels from '@/data/curated-channels.json';
 import ChannelCard from '@/components/ChannelCard';
 import HeroSection from '@/components/HeroSection';
 import ThemeToggle from '@/components/ThemeToggle';
+import ShowTypeSlideshow from '@/components/ShowTypeSlideshow';
 import { CategoryRowSkeleton, HeroSectionSkeleton } from '@/components/SkeletonLoader';
 import { useRecentlyWatched } from '@/hooks/useRecentlyWatched';
+import {
+  IconTV,
+  IconKids,
+  IconNews,
+  IconMusic,
+  IconSports,
+  IconEntertainment,
+  IconMovies,
+  IconNigeria,
+} from '@/components/Icons';
 import type { Channel, ChannelCategory } from '@/types/channel';
 
 const CATEGORIES: ChannelCategory[] = ['Kids', 'News', 'Music', 'Religious', 'Sports', 'Entertainment', 'Movies', 'Nigerian'];
 
-const CATEGORY_ICONS: Record<ChannelCategory, string> = {
-  'Kids': '👶',
-  'News': '📰',
-  'Music': '🎵',
-  'Religious': '⛪',
-  'Sports': '⚽',
-  'Entertainment': '🎬',
-  'Movies': '🎭',
-  'Nigerian': '🇳🇬',
+interface CategoryIconMap {
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+const CATEGORY_ICONS: Record<ChannelCategory, CategoryIconMap> = {
+  'Kids': { icon: IconKids },
+  'News': { icon: IconNews },
+  'Music': { icon: IconMusic },
+  'Religious': { icon: IconEntertainment },
+  'Sports': { icon: IconSports },
+  'Entertainment': { icon: IconEntertainment },
+  'Movies': { icon: IconMovies },
+  'Nigerian': { icon: IconNigeria },
 };
 
 function CategoryRow({ category, channels }: { category: ChannelCategory; channels: Channel[] }) {
   if (channels.length === 0) return null;
 
+  const IconComponent = CATEGORY_ICONS[category].icon;
+
   return (
     <section>
       <div className="flex items-center gap-3 mb-6">
-        <span className="text-3xl">{CATEGORY_ICONS[category]}</span>
+        <IconComponent className="w-8 h-8 text-red-500" />
         <h2 className="text-3xl font-bold text-balance">{category}</h2>
         <span className="ml-auto text-sm text-neutral-500">
           {channels.length} channels
@@ -52,7 +69,11 @@ function ContinueWatching({ channels }: { channels: Channel[] }) {
   return (
     <section>
       <div className="flex items-center gap-3 mb-6">
-        <span className="text-3xl">⏱️</span>
+        <div className="w-8 h-8">
+          <svg className="w-full h-full text-red-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
+          </svg>
+        </div>
         <h2 className="text-3xl font-bold">Continue Watching</h2>
       </div>
       <div className="flex gap-6 overflow-x-auto pb-4 scroll-smooth">
@@ -84,7 +105,7 @@ export default function Home() {
       <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-neutral-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="text-3xl">📺</div>
+            <IconTV className="w-8 h-8 text-red-500" />
             <h1 className="text-2xl font-bold bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent">
               Live TV
             </h1>
@@ -111,6 +132,9 @@ export default function Home() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+        {/* Show Types Slideshow */}
+        <ShowTypeSlideshow />
+
         {/* Hero Section */}
         <Suspense fallback={<HeroSectionSkeleton />}>
           <HeroSection channels={featuredChannels} />
